@@ -18,7 +18,7 @@ NC='\033[0m' # No Color
 # Configuration
 APP_NAME="feschunterwegs"
 APP_DIR="/var/www/feschunterwegs"
-REPO_URL="https://github.com/yourusername/reiseagentur.git"  # Update this with your actual repo
+REPO_URL="https://github.com/Shareforreal/feschunterwegs.git"
 BRANCH="main"
 DOMAIN="feschunterwegs.com"
 
