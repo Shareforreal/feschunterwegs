@@ -116,7 +116,7 @@ const Quiz = () => {
     setIsSubmitting(true);
     
     try {
-      await axios.post('http://localhost:5001/api/quiz', {
+      await axios.post('https://feschunterwegs.com/api/quiz', {
         answers,
         timeAllocations,
         email,
