@@ -189,7 +189,7 @@ server {
     gzip_types text/plain text/css text/xml text/javascript application/x-javascript application/xml+rss;
     
     location / {
-        proxy_pass http://localhost:5001;
+        proxy_pass http://localhost:5002;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection 'upgrade';
