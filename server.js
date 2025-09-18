@@ -165,14 +165,9 @@ const sendCustomerConfirmation = async (type, data) => {
 
     await transporter.sendMail({
       from: process.env.SMTP_USER || 'servus@feschunterwegs.com',
-      to: 'servus@feschunterwegs.com', // Sending to servus@feschunterwegs.com for testing
-      subject: `[TEST - Customer Email] ${subject}`,
-      html: `
-        <div style="background: #f0f0f0; padding: 10px; margin-bottom: 20px; border-left: 4px solid #ff6b6b;">
-          <strong>TEST EMAIL - This would normally go to: ${data.email}</strong>
-        </div>
-        ${html}
-      `
+      to: data.email,
+      subject: subject,
+      html: html
     });
     
     console.log(`${type === 'quiz' ? 'Quiz' : 'Reservierungs'} Bestätigung an Kunde gesendet`);
@@ -288,8 +283,19 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: 'Something went wrong!' });
 });
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
+});
+
+// Enable SO_REUSEADDR to handle zombie sockets
+server.on('error', (err) => {
+  if (err.code === 'EADDRINUSE') {
+    console.log('Port is in use, retrying in 1 second...');
+    setTimeout(() => {
+      server.close();
+      server.listen(PORT);
+    }, 1000);
+  }
 });
 
 // Graceful shutdown
