@@ -237,6 +237,7 @@ const ExperienceCard = ({ experience, index, isExpanded, onToggle }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [showReservationForm, setShowReservationForm] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [reservationData, setReservationData] = useState({
     firstName: '',
     lastName: '',
@@ -286,7 +287,7 @@ const ExperienceCard = ({ experience, index, isExpanded, onToggle }) => {
       });
       
       if (response.ok) {
-        alert('Reservierungsanfrage erfolgreich gesendet! Wir melden uns zeitnah bei Ihnen.');
+        setShowSuccessModal(true);
         setShowReservationForm(false);
         setReservationData({
           firstName: '',
@@ -713,6 +714,65 @@ const ExperienceCard = ({ experience, index, isExpanded, onToggle }) => {
                     </button>
                   </div>
                 </form>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+        
+        {/* Success Modal */}
+        <AnimatePresence>
+          {showSuccessModal && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+              onClick={() => setShowSuccessModal(false)}
+            >
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.8, y: 20 }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+                className="bg-white rounded-2xl p-8 md:p-12 max-w-md w-full shadow-2xl relative overflow-hidden"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* Decorative background elements */}
+                <div className="absolute top-0 right-0 w-24 h-24 bg-coral-100 rounded-full -translate-y-12 translate-x-12"></div>
+                <div className="absolute bottom-0 left-0 w-16 h-16 bg-coral-200 rounded-full translate-y-8 -translate-x-8"></div>
+                
+                {/* Content */}
+                <div className="relative z-10 text-center">
+                  {/* Success Icon */}
+                  <div className="w-20 h-20 bg-gradient-to-br from-coral-400 to-coral-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
+                    <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  
+                  {/* Main Message */}
+                  <h3 className="text-2xl md:text-3xl font-playfair font-bold text-coral-900 mb-4 leading-tight">
+                    🎉 Perfekt! Eure Anfrage ist unterwegs!
+                  </h3>
+                  
+                  <p className="text-lg text-coral-800 mb-6 leading-relaxed">
+                    Wir freuen uns riesig auf euch! Unser Team meldet sich in den nächsten 24 Stunden bei euch mit allen Details zu eurem <strong>{experience.title}</strong>.
+                  </p>
+                  
+                  <div className="bg-coral-50 rounded-xl p-4 mb-6 border border-coral-200">
+                    <p className="text-sm text-coral-700 font-medium">
+                      💌 Checkt euer E-Mail-Postfach – dort findet ihr eine Bestätigung mit allen wichtigen Infos!
+                    </p>
+                  </div>
+                  
+                  {/* Action Button */}
+                  <button
+                    onClick={() => setShowSuccessModal(false)}
+                    className="w-full bg-coral-500 text-white py-4 px-6 rounded-xl font-semibold hover:bg-coral-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+                  >
+                    Verstanden! 🚀
+                  </button>
+                </div>
               </motion.div>
             </motion.div>
           )}

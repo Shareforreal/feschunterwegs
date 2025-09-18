@@ -6,7 +6,7 @@ const Hero = () => {
   const [isPaused, setIsPaused] = useState(false);
   
   const heroImages = [
-    "/images/de_durger_Ein-glueckliches-Paar-auf-der-Wiese-vor-dem-Hotel.jpeg",
+    "/images/Feschunterwegs_Lifestyle_Wochenendtrip_2 Frauen am Steg.webp",
     "/images/Blyb_Zeitunglesen im Bett.jpg",
     "/images/Prati_Palai_Weinernte.jpg",
     "/images/@richardgiori-@crema_video7-scaled.jpg",

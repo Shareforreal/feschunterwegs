@@ -55,6 +55,7 @@ async function migrateDatabase() {
     await targetClient.query(`
       CREATE TABLE IF NOT EXISTS quiz_submissions (
         id SERIAL PRIMARY KEY,
+        quiz_id VARCHAR(50) UNIQUE NOT NULL,
         email VARCHAR(255) NOT NULL,
         first_name VARCHAR(255),
         answers JSONB NOT NULL,
@@ -66,6 +67,7 @@ async function migrateDatabase() {
     await targetClient.query(`
       CREATE TABLE IF NOT EXISTS reservations (
         id SERIAL PRIMARY KEY,
+        booking_id VARCHAR(50) UNIQUE NOT NULL,
         experience VARCHAR(255) NOT NULL,
         first_name VARCHAR(255) NOT NULL,
         last_name VARCHAR(255) NOT NULL,
@@ -102,9 +104,10 @@ async function migrateDatabase() {
       const quizData = await sourceClient.query('SELECT * FROM quiz_submissions');
       
       for (const row of quizData.rows) {
+        const quizId = `Q${Math.random().toString(36).substr(2, 5).toUpperCase()}`;
         await targetClient.query(
-          'INSERT INTO quiz_submissions (email, first_name, answers, time_allocations, created_at) VALUES ($1, $2, $3, $4, $5)',
-          [row.email, row.first_name, row.answers, row.time_allocations, row.created_at]
+          'INSERT INTO quiz_submissions (quiz_id, email, first_name, answers, time_allocations, created_at) VALUES ($1, $2, $3, $4, $5, $6)',
+          [quizId, row.email, row.first_name, row.answers, row.time_allocations, row.created_at]
         );
       }
       console.log(`✅ Migrated ${quizData.rows.length} quiz submissions`);
@@ -116,10 +119,11 @@ async function migrateDatabase() {
       const reservationData = await sourceClient.query('SELECT * FROM reservations');
       
       for (const row of reservationData.rows) {
+        const bookingId = `B${Math.random().toString(36).substr(2, 5).toUpperCase()}`;
         await targetClient.query(
-          `INSERT INTO reservations (experience, first_name, last_name, email, phone, arrival, departure, guests, wishes, terms_accepted, marketing_accepted, created_at) 
-           VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)`,
-          [row.experience, row.first_name, row.last_name, row.email, row.phone, row.arrival, row.departure, row.guests, row.wishes, row.terms_accepted, row.marketing_accepted, row.created_at]
+          `INSERT INTO reservations (booking_id, experience, first_name, last_name, email, phone, arrival, departure, guests, wishes, terms_accepted, marketing_accepted, created_at) 
+           VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)`,
+          [bookingId, row.experience, row.first_name, row.last_name, row.email, row.phone, row.arrival, row.departure, row.guests, row.wishes, row.terms_accepted, row.marketing_accepted, row.created_at]
         );
       }
       console.log(`✅ Migrated ${reservationData.rows.length} reservations`);

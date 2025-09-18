@@ -8,13 +8,12 @@ const questions = [
     id: 'trip_type',
     question: 'Was ist das Wichtigste für euren perfekten Trip?',
     options: [
-      { value: 'romance', label: '💕 Zweisamkeit\nZeit füreinander haben, ohne Ablenkung, intensive Gespräche' },
-      { value: 'unique', label: '🌟 Etwas Besonderes\nEtwas erleben, was sonst niemand hat - einzigartige Stories sammeln' },
+      { value: 'romance', label: '💕 Zweisamkeit\nZeit füreinander haben, ohne Ablenkung' },
+      { value: 'unique', label: '🌟 Etwas Besonderes\nEin außergewöhnliches Erlebnis, das wir so noch nie hatten' },
       { value: 'relaxation', label: '🧘‍♀️ Pure Entspannung\nEndlich mal runterkommen, Stress vergessen, Seele baumeln lassen' },
       { value: 'culture', label: '🎭 Kulturelle Erlebnisse\nNeue Welten entdecken, lernen, inspiriert werden' },
-      { value: 'adventure', label: '🏔️ Outdoor Abenteuer\nAction, Adrenalin, unvergessliche Kulissen' },
-      { value: 'party', label: '🎉 Feierei!!\nParty, Lachen, das Leben feiern' },
-      { value: 'instagram', label: '📸 Instagram Moments\nWow-Momente schaffen, die alle neidisch machen' }
+      { value: 'adventure', label: '🏔️ Outdoor Abenteuer\nAction, Adrenalin und unvergessliche Kulissen' },
+      { value: 'party', label: '🎉 Feierei!!\nGenießen, Lachen, das Leben feiern' }
     ]
   },
   {
@@ -149,22 +148,37 @@ const Quiz = () => {
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6 }}
+            className="relative"
           >
-            <div className="w-24 h-24 bg-editorial-100 rounded-lg flex items-center justify-center mx-auto mb-8 shadow-sm">
-              <CheckCircle className="w-12 h-12 text-editorial-700" />
+            {/* Thank you message box */}
+            <div className="bg-gradient-to-br from-coral-50 to-coral-100 border-2 border-coral-200 rounded-2xl p-8 md:p-12 shadow-lg relative overflow-hidden">
+              {/* Decorative background pattern */}
+              <div className="absolute top-0 right-0 w-32 h-32 bg-coral-200/20 rounded-full -translate-y-16 translate-x-16"></div>
+              <div className="absolute bottom-0 left-0 w-24 h-24 bg-coral-300/20 rounded-full translate-y-12 -translate-x-12"></div>
+              
+              {/* Content */}
+              <div className="relative z-10">
+                <div className="w-20 h-20 bg-coral-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-md">
+                  <CheckCircle className="w-10 h-10 text-white" />
+                </div>
+                
+                <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 mb-6 border border-coral-200/50 shadow-sm">
+                  <h2 className="text-2xl md:text-3xl mb-4 text-coral-900 font-playfair font-bold leading-tight">
+                    Danke! Wir schicken euch schon bald die besten Kurztrips für euer Gefühl.
+                  </h2>
+                  <p className="text-lg text-coral-800 font-sans leading-relaxed">
+                    Ihr werdet eine E-Mail mit euren personalisierten Reiseempfehlungen erhalten.
+                  </p>
+                </div>
+                
+                <button 
+                  onClick={resetQuiz}
+                  className="px-8 py-4 bg-coral-500 text-white rounded-xl font-semibold hover:bg-coral-600 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-1 font-sans text-lg"
+                >
+                  Quiz erneut starten
+                </button>
+              </div>
             </div>
-            <h2 className="text-section mb-6 text-editorial-900 font-playfair">
-              Danke! Wir schicken euch schon bald die besten Kurztrips für euer Gefühl.
-            </h2>
-            <p className="text-body mb-8 max-w-2xl mx-auto text-editorial-700 font-sans">
-              Ihr werdet eine E-Mail mit euren personalisierten Reiseempfehlungen erhalten.
-            </p>
-            <button 
-              onClick={resetQuiz}
-              className="px-8 py-4 bg-white text-editorial-700 rounded-lg font-semibold hover:bg-editorial-50 border border-editorial-300 hover:border-editorial-400 transition-all duration-300 shadow-sm hover:shadow-md font-sans"
-            >
-              Quiz erneut starten
-            </button>
           </motion.div>
         </div>
       </section>
