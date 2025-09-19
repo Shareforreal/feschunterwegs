@@ -43,7 +43,7 @@ const Impressum = () => {
               <p>Alessa Schuhmacher (Geschäftsführerin)</p>
               <br/>
               <p><strong>Kontakt:</strong></p>
-              <p>E-Mail: support@feschunterwegs.com</p>
+              <p>E-Mail: servus@feschunterwegs.com</p>
               <br/>
               <p><strong>Registereintrag:</strong></p>
               <p>Eintragung im Handelsregister</p>

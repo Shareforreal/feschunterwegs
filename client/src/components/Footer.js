@@ -24,7 +24,7 @@ const Footer = () => {
           <div>
             <h3 className="text-section mb-6 text-white">Servus sagen</h3>
             <div className="text-body text-white/80 space-y-4">
-              <p className="text-sm text-white/70 mb-4">
+              <p className="text-body text-white/80 mb-4">
                 Ihr erreicht uns immer – für die schnelle Frage zwischendurch oder die perfekte Empfehlung.
               </p>
               <div className="space-y-3">
@@ -52,7 +52,7 @@ const Footer = () => {
                     {showPhone ? (
                       <span className="text-white font-medium">+49 89 12255844</span>
                     ) : (
-                      <span>Phone</span>
+                      <span>Telefon</span>
                     )}
                   </button>
                 </p>
