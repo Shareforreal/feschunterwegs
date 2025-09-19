@@ -20,26 +20,40 @@ const questions = [
     id: 'accommodation',
     question: 'Wie sieht euer Zuhause auf Zeit aus?',
     options: [
-      { value: 'luxury', label: '🛎️ Luxuriös\nInfinity Pool, Designer Möbel und Service, der keinen Wunsch offen lässt' },
-      { value: 'charming', label: '🕯️ Charmant\nJahrhundertealte Mauern, Geschichten in jeder Ecke, Wein mit dem Besitzer' },
-      { value: 'unique', label: '✨ Außergewöhnlich\nUnter Sternen schlafen, im Kloster meditieren, in Thermen baden - außergewöhnlich' },
-      { value: 'remote', label: '🏔️ Abgeschottet\nAbgeschottet in der Natur, ohne Handynetz - nur Zeit für euch' }
+      { value: 'luxury', label: '🛎️ Luxuriös\nInfinity Pool, Butler-Service und Designer-Suiten, die keine Wünsche offen lassen' },
+      { value: 'boutique', label: '💄 Boutique\nStilvolle Hideaways mit individuellem Design und persönlichem Service zum Verlieben' },
+      { value: 'charming', label: '🕯️ Traditionell\nJahrhundertealte Mauern, authentische Geschichten und Wein mit dem Gastgeber' },
+      { value: 'unique', label: '✨ Außergewöhnlich\nUnter Sternen schlafen, im Baumhaus träumen oder in Burgen residieren' },
+      { value: 'remote', label: '🏔️ Zurückgezogen\nVersteckte Refugien in der Natur, perfekt zum Abschalten und gemeinsame Zeit genießen' }
     ]
   },
   {
-    id: 'time_allocation',
-    question: 'Wie möchtet ihr eure Auszeit verbringen?',
-    isTimeAllocation: true,
-     options: [
-       { value: 'sightseeing', label: '🏛️ Sightseeing' },
-       { value: 'culture', label: '🎨 Kunst & Geschichte' },
-       { value: 'culinary', label: '🍝 Kulinarik' },
-       { value: 'nightlife', label: '🍸 Nightlife' },
-       { value: 'wellness', label: '💆 Wellness' },
-       { value: 'active', label: '🥾 Sport & Aktiv' },
-       { value: 'local', label: '🪗 Authentisch lokal' },
-       { value: 'photography', label: '🌅 Traumlandschaften' }
-     ]
+    id: 'must_have',
+    question: 'Was dürfen wir auf keinen Fall vergessen?',
+    isMultipleSelection: true,
+    minSelections: 2,
+    maxSelections: 4,
+    options: [
+      { value: 'culinary', label: '🍷 Kulinarische Höhepunkte' },
+      { value: 'culture', label: '🏛️ Kulturelle Erlebnisse' },
+      { value: 'wellness', label: '💆 Wellness & Entspannung' },
+      { value: 'sports', label: '🥾 Sport & Outdoor-Aktivitäten' },
+      { value: 'shopping', label: '🛍️ Shopping & Märkte' },
+      { value: 'nightlife', label: '🍸 Nightlife & Bars' },
+      { value: 'events', label: '🎭 Lokale Events & Konzerte' },
+      { value: 'photography', label: '📸 Besondere Orte & Fotospots' }
+    ]
+  },
+  {
+    id: 'backdrop',
+    question: 'Welche Kulisse macht euren Trip perfekt?',
+    options: [
+      { value: 'mountains', label: '🏔️ Berge & Natur' },
+      { value: 'water', label: '🌊 Seen & Flüsse' },
+      { value: 'historic', label: '🏛️ Historische Städte' },
+      { value: 'modern', label: '🌆 Moderne Metropolen' },
+      { value: 'any', label: '🤷‍♀️ Ist uns egal, Hauptsache schön' }
+    ]
   }
 ];
 
@@ -50,8 +64,7 @@ const Quiz = () => {
   const [firstName, setFirstName] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [timeAllocations, setTimeAllocations] = useState({});
-  const [showCustomization, setShowCustomization] = useState(false);
+  const [multipleSelections, setMultipleSelections] = useState({});
 
   const handleAnswer = (questionId, answer) => {
     setAnswers(prev => ({ ...prev, [questionId]: answer }));
@@ -68,40 +81,41 @@ const Quiz = () => {
     }
   };
 
-  const handleTimeAllocation = (optionValue, value) => {
-    const newValue = Math.max(0, Math.min(100, parseInt(value) || 0));
+  const handleMultipleSelection = (questionId, optionValue) => {
+    const currentSelections = multipleSelections[questionId] || [];
+    const isSelected = currentSelections.includes(optionValue);
     
-    // Calculate current total excluding the current option
-    const currentTotal = Object.entries(timeAllocations)
-      .filter(([key]) => key !== optionValue)
-      .reduce((sum, [, val]) => sum + val, 0);
+    let newSelections;
+    if (isSelected) {
+      // Remove selection
+      newSelections = currentSelections.filter(val => val !== optionValue);
+    } else {
+      // Add selection (check max limit)
+      const question = questions.find(q => q.id === questionId);
+      const maxSelections = question?.maxSelections || 4;
+      
+      if (currentSelections.length < maxSelections) {
+        newSelections = [...currentSelections, optionValue];
+      } else {
+        return; // Don't add if at max limit
+      }
+    }
     
-    // Calculate maximum allowed value for this option
-    const maxAllowed = 100 - currentTotal;
-    const finalValue = Math.min(newValue, maxAllowed);
-    
-    setTimeAllocations(prev => ({
+    setMultipleSelections(prev => ({
       ...prev,
-      [optionValue]: finalValue
+      [questionId]: newSelections
     }));
   };
 
-  const getTotalTimeAllocated = () => {
-    return Object.values(timeAllocations).reduce((sum, val) => sum + val, 0);
+  const canProceedFromMultipleSelection = (questionId) => {
+    const question = questions.find(q => q.id === questionId);
+    const currentSelections = multipleSelections[questionId] || [];
+    const minSelections = question?.minSelections || 0;
+    const maxSelections = question?.maxSelections || 4;
+    
+    return currentSelections.length >= minSelections && currentSelections.length <= maxSelections;
   };
 
-  const getRemainingTime = () => {
-    return Math.max(0, 100 - getTotalTimeAllocated());
-  };
-
-  const canProceedFromTimeAllocation = () => {
-    return getTotalTimeAllocated() === 100;
-  };
-
-  const resetTimeAllocations = () => {
-    setTimeAllocations({});
-    setShowCustomization(false);
-  };
 
 
   const goBack = () => {
@@ -117,7 +131,7 @@ const Quiz = () => {
     try {
       await axios.post('https://feschunterwegs.com/api/quiz', {
         answers,
-        timeAllocations,
+        multipleSelections,
         email,
         firstName
       });
@@ -136,8 +150,7 @@ const Quiz = () => {
     setEmail('');
     setFirstName('');
     setIsSubmitted(false);
-    setTimeAllocations({});
-    setShowCustomization(false);
+    setMultipleSelections({});
   };
 
   if (isSubmitted) {
@@ -252,173 +265,73 @@ const Quiz = () => {
                    {questions[currentQuestion].question}
                  </h3>
                 
-                {questions[currentQuestion].isTimeAllocation ? (
+                {questions[currentQuestion].isMultipleSelection ? (
                   <div className="space-y-6">
-                    {!showCustomization ? (
-                      /* Step 1: Preset Selection */
-                      <div className="space-y-6">
-                        <div className="bg-editorial-50 rounded-lg p-6 border border-editorial-200">
-                          <h5 className="text-lg font-semibold text-editorial-700 mb-4 font-sans text-center">Wählt euren Stil</h5>
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <button
-                              onClick={() => {
-                                const balanced = {
-                                  sightseeing: 12, culture: 12, culinary: 12, nightlife: 12,
-                                  wellness: 12, active: 12, local: 12, photography: 12
-                                };
-                                setTimeAllocations(balanced);
-                                setShowCustomization(true);
-                              }}
-                              className="p-6 bg-white hover:bg-editorial-100 text-editorial-700 rounded-lg border border-editorial-300 hover:border-editorial-400 transition-all duration-300 font-sans shadow-sm hover:shadow-md text-left"
-                            >
-                              <div className="text-3xl mb-3">⚖️</div>
-                              <div className="text-lg font-semibold mb-2">Ausgewogen</div>
-                              <div className="text-sm text-editorial-600">Alle Aktivitäten gleichmäßig verteilt</div>
-                            </button>
-                            
-                            <button
-                              onClick={() => {
-                                const foodie = {
-                                  sightseeing: 10, culture: 15, culinary: 40, nightlife: 15,
-                                  wellness: 5, active: 5, local: 5, photography: 5
-                                };
-                                setTimeAllocations(foodie);
-                                setShowCustomization(true);
-                              }}
-                              className="p-6 bg-white hover:bg-editorial-100 text-editorial-700 rounded-lg border border-editorial-300 hover:border-editorial-400 transition-all duration-300 font-sans shadow-sm hover:shadow-md text-left"
-                            >
-                              <div className="text-3xl mb-3">🍝</div>
-                              <div className="text-lg font-semibold mb-2">Foodie-Fokus</div>
-                              <div className="text-sm text-editorial-600">Kulinarische Erlebnisse im Mittelpunkt</div>
-                            </button>
-                            
-                            <button
-                              onClick={() => {
-                                const slowEscape = {
-                                  sightseeing: 10, culture: 15, culinary: 30, nightlife: 5,
-                                  wellness: 25, active: 10, local: 3, photography: 2
-                                };
-                                setTimeAllocations(slowEscape);
-                                setShowCustomization(true);
-                              }}
-                              className="p-6 bg-white hover:bg-editorial-100 text-editorial-700 rounded-lg border border-editorial-300 hover:border-editorial-400 transition-all duration-300 font-sans shadow-sm hover:shadow-md text-left"
-                            >
-                              <div className="text-3xl mb-3">🧘</div>
-                              <div className="text-lg font-semibold mb-2">Slow Escape</div>
-                              <div className="text-sm text-editorial-600">Wellness, Kulinarik und sanfte Aktivitäten</div>
-                            </button>
-                            
-                            <button
-                              onClick={() => {
-                                const adventure = {
-                                  sightseeing: 20, culture: 10, culinary: 15, nightlife: 10,
-                                  wellness: 5, active: 30, local: 5, photography: 5
-                                };
-                                setTimeAllocations(adventure);
-                                setShowCustomization(true);
-                              }}
-                              className="p-6 bg-white hover:bg-editorial-100 text-editorial-700 rounded-lg border border-editorial-300 hover:border-editorial-400 transition-all duration-300 font-sans shadow-sm hover:shadow-md text-left"
-                            >
-                              <div className="text-3xl mb-3">🥾</div>
-                              <div className="text-lg font-semibold mb-2">Abenteuer-Fokus</div>
-                              <div className="text-sm text-editorial-600">Sport, Aktivitäten und Outdoor-Erlebnisse</div>
-                            </button>
-                          </div>
-                          
-                          <div className="mt-6 text-center">
-                            <button
-                              onClick={() => setShowCustomization(true)}
-                              className="px-6 py-3 bg-editorial-100 hover:bg-editorial-200 text-editorial-700 rounded-lg border border-editorial-300 hover:border-editorial-400 transition-all duration-300 font-sans"
-                            >
-                              ✏️ Individuell anpassen
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    ) : (
-                      /* Step 2: Customization */
-                      <div className="space-y-6">
-                        <div className="flex items-center justify-between">
-                          <h5 className="text-lg font-semibold text-editorial-700 font-sans">Individuelle Anpassung</h5>
-                          <button
-                            onClick={() => setShowCustomization(false)}
-                            className="px-4 py-2 text-sm text-editorial-600 hover:text-editorial-800 transition-colors font-sans"
-                          >
-                            ← Zurück zu Presets
-                          </button>
-                        </div>
-
-                        {/* Activity Cards with Sliders */}
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16" style={{marginBottom: '64px'}}>
-                          {questions[currentQuestion].options.map((option, index) => {
-                            const currentValue = timeAllocations[option.value] || 0;
-                            const currentTotal = getTotalTimeAllocated();
-                            const maxAllowed = 100 - (currentTotal - currentValue);
-                            
-                            return (
-                               <motion.div
-                                 key={option.value}
-                                 className={`bg-white border border-editorial-200 rounded-lg p-4 transition-all duration-300 hover:shadow-sm ${
-                                   currentValue > 0 ? 'border-editorial-400 bg-editorial-50' : 'border-editorial-200'
-                                 }`}
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: index * 0.05 }}
-                              >
-                         <div className="text-center mb-3">
-                           <h5 className="text-base font-semibold text-editorial-900 mb-2 font-sans">
-                             {option.label}
-                           </h5>
-                           <div className="text-base font-normal text-sage-700 font-sans">
-                             {currentValue}%
-                           </div>
-                         </div>
-                                
-                                {/* Slider */}
-                                <div className="space-y-2">
-                                  <input
-                                    type="range"
-                                    min="0"
-                                    max="100"
-                                    value={currentValue}
-                                    onChange={(e) => handleTimeAllocation(option.value, e.target.value)}
-                                    className="w-full h-2 bg-editorial-200 rounded-lg appearance-none cursor-pointer slider"
-                                     style={{
-                                       background: `linear-gradient(to right, #8a9e8a 0%, #8a9e8a ${currentValue}%, #dde3dd ${currentValue}%, #dde3dd 100%)`
-                                     }}
-                                  />
-                                </div>
-                              </motion.div>
-                            );
-                          })}
-                        </div>
-
-                        {/* Continue Button */}
-                        <div className="text-center">
+                    <div className="bg-editorial-50 rounded-lg p-6 border border-editorial-200 mb-6">
+                      <p className="text-sm text-editorial-600 text-center font-sans">
+                        Wählt {questions[currentQuestion].minSelections} bis {questions[currentQuestion].maxSelections} Optionen aus
+                      </p>
+                    </div>
+                    
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                      {questions[currentQuestion].options.map((option, index) => {
+                        const currentSelections = multipleSelections[questions[currentQuestion].id] || [];
+                        const isSelected = currentSelections.includes(option.value);
+                        const canSelect = currentSelections.length < questions[currentQuestion].maxSelections || isSelected;
+                        
+                        return (
                           <motion.button
-                            onClick={() => {
-                              if (canProceedFromTimeAllocation()) {
-                                setAnswers(prev => ({ ...prev, [questions[currentQuestion].id]: timeAllocations }));
-                                setTimeout(() => {
-                                  setCurrentQuestion(prev => prev + 1);
-                                }, 300);
-                              }
-                            }}
-                            disabled={!canProceedFromTimeAllocation()}
-                            className={`w-48 mx-auto py-4 px-8 rounded-lg font-semibold text-lg transition-all duration-300 shadow-lg hover:shadow-xl ${
-                              canProceedFromTimeAllocation()
-                                ? 'bg-coral-500 text-white hover:bg-coral-600'
-                                : 'bg-editorial-200 text-editorial-500 cursor-not-allowed'
+                            key={option.value}
+                            onClick={() => handleMultipleSelection(questions[currentQuestion].id, option.value)}
+                            disabled={!canSelect}
+                            className={`p-6 text-center border rounded-lg transition-all duration-300 font-sans shadow-sm hover:shadow-md ${
+                              isSelected
+                                ? 'bg-coral-500 text-white border-coral-500 shadow-md'
+                                : canSelect
+                                ? 'bg-white text-editorial-700 border-editorial-200 hover:border-editorial-400 hover:bg-editorial-50'
+                                : 'bg-editorial-100 text-editorial-400 border-editorial-200 cursor-not-allowed'
                             }`}
-                            whileHover={canProceedFromTimeAllocation() ? { scale: 1.02 } : {}}
-                            whileTap={canProceedFromTimeAllocation() ? { scale: 0.98 } : {}}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: index * 0.05 }}
+                            whileHover={canSelect ? { scale: 1.02 } : {}}
+                            whileTap={canSelect ? { scale: 0.98 } : {}}
                           >
-                            Weiter
+                            <div className="text-3xl mb-3">{option.label.split(' ')[0]}</div>
+                            <div className="text-sm font-semibold leading-tight">
+                              {option.label.split(' ').slice(1).join(' ')}
+                            </div>
                           </motion.button>
-                        </div>
+                        );
+                      })}
+                    </div>
 
-                      </div>
-                    )}
+                    {/* Continue Button */}
+                    <div className="text-center mt-8">
+                      <motion.button
+                        onClick={() => {
+                          if (canProceedFromMultipleSelection(questions[currentQuestion].id)) {
+                            setAnswers(prev => ({ 
+                              ...prev, 
+                              [questions[currentQuestion].id]: multipleSelections[questions[currentQuestion].id] 
+                            }));
+                            setTimeout(() => {
+                              setCurrentQuestion(prev => prev + 1);
+                            }, 300);
+                          }
+                        }}
+                        disabled={!canProceedFromMultipleSelection(questions[currentQuestion].id)}
+                        className={`w-48 mx-auto py-4 px-8 rounded-lg font-semibold text-lg transition-all duration-300 shadow-lg hover:shadow-xl ${
+                          canProceedFromMultipleSelection(questions[currentQuestion].id)
+                            ? 'bg-coral-500 text-white hover:bg-coral-600'
+                            : 'bg-editorial-200 text-editorial-500 cursor-not-allowed'
+                        }`}
+                        whileHover={canProceedFromMultipleSelection(questions[currentQuestion].id) ? { scale: 1.02 } : {}}
+                        whileTap={canProceedFromMultipleSelection(questions[currentQuestion].id) ? { scale: 0.98 } : {}}
+                      >
+                        Weiter
+                      </motion.button>
+                    </div>
                   </div>
                 ) : (
                   <div className="space-y-4">

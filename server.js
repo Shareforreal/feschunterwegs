@@ -283,18 +283,29 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: 'Something went wrong!' });
 });
 
-const server = app.listen(PORT, () => {
+const server = app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server is running on port ${PORT}`);
 });
 
 // Enable SO_REUSEADDR to handle zombie sockets
 server.on('error', (err) => {
   if (err.code === 'EADDRINUSE') {
-    console.log('Port is in use, retrying in 1 second...');
-    setTimeout(() => {
-      server.close();
-      server.listen(PORT);
-    }, 1000);
+    console.log('Port is in use, trying to force close and restart...');
+    server.close(() => {
+      setTimeout(() => {
+        const newServer = app.listen(PORT, '0.0.0.0', () => {
+          console.log(`Server restarted on port ${PORT}`);
+        });
+        newServer.on('error', (err) => {
+          if (err.code === 'EADDRINUSE') {
+            console.log('Still in use, using port 5003 instead...');
+            const fallbackServer = app.listen(5003, '0.0.0.0', () => {
+              console.log(`Server running on fallback port 5003`);
+            });
+          }
+        });
+      }, 2000);
+    });
   }
 });
 
