@@ -70,12 +70,9 @@ const StickyCTA = () => {
             <div className="max-w-md mx-auto mb-6">
               <div className="bg-sage-50 rounded-lg shadow-2xl border border-sage-200 p-4">
                 <div className="flex items-center justify-between gap-2">
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-semibold text-gray-900 mb-1">
-                      Deine perfekten Trips warten
-                    </p>
-                    <p className="text-xs text-gray-600">
-                      Nur 2 Minuten zu deinen Geheimtipps
+                  <div className="flex-1 min-w-0 text-center">
+                    <p className="text-sm font-semibold text-gray-900">
+                      Dein Traumtrip in 2 Min ✨
                     </p>
                   </div>
                   

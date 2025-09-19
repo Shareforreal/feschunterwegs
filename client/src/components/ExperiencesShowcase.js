@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronUp, ChevronLeft, ChevronRight, Clock, Users, X, Calendar, User, Mail, Phone } from 'lucide-react';
+import { ChevronUp, ChevronLeft, ChevronRight, Clock, Users, X, Calendar, User, Mail, Phone, Flame } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const experiences = [
@@ -13,8 +13,7 @@ const experiences = [
     travelTime: "3h 30min mit dem Auto",
     duration: "3 Tage",
     groupSize: "2 Personen",
-    price: "1.190€",
-    originalPrice: "1.340€",
+    price: "1.370€",
     description: "Palmen zwischen Zypressen. Goldene Weinberge. Wein, der nach Sonne schmeckt. Hier erlebt ihr, warum manche Orte süchtig machen – mediterranes Flair auf 300m Höhe, wo die Dolomiten am Horizont tanzen.",
     details: [
       "2× Übernachtungen in historischer Schlosssuite",
@@ -50,8 +49,7 @@ const experiences = [
     travelTime: "2h 15min mit dem Auto",
     duration: "3 Tage", 
     groupSize: "2 Personen",
-    price: "1.150€",
-    originalPrice: "1.280€",
+    price: "1.420€",
     description: "270 Jahre alte Seele in moderner Hülle. Hier trifft Kunst auf Architektur, Tradition auf Innovation. Umgeben von den weltberühmten Krumbach-Bushaltestellen und dem 'schönsten Platz Österreichs'.",
     details: [
       "2× Übernachtungen im preisgekrönten Design-Hotel",
@@ -87,8 +85,9 @@ const experiences = [
     travelTime: "4h 45min mit dem Auto",
     duration: "4 Tage",
     groupSize: "2 Personen", 
-    price: "980€",
-    originalPrice: "1.120€",
+    price: "1.100€",
+    originalPrice: "1.180€",
+    septemberOffer: true,
     description: "Nur acht Zimmer über Bardolinos Dächern. Adults Only – perfekte Ruhe garantiert. Hier gehört ihr zum inneren Kreis derer, die wissen, wo das echte Italien versteckt ist.",
     details: [
       "3× Übernachtungen in exklusiver Suite",
@@ -125,8 +124,7 @@ const experiences = [
     travelTime: "1h 30min mit dem Auto • 1h 45min mit der Bahn",
     duration: "3 Tage",
     groupSize: "2 Personen",
-    price: "780€",
-    originalPrice: "890€", 
+    price: "900€", 
     description: "Beuys und Gilbert & George in 700 Jahre alten Mauern. Der Kultur-Hotspot für alle, die ihre Ästhetik ernst nehmen. Hier schlägt das Kunstherz von Mozarts Stadt.",
     details: [
       "2× Übernachtungen im kunst-kuratierten Ambiente",
@@ -161,8 +159,7 @@ const experiences = [
     travelTime: "1h 45min mit dem Auto",
     duration: "4 Tage", 
     groupSize: "2 Personen",
-    price: "1.180€",
-    originalPrice: "1.320€",
+    price: "1.400€",
     description: "Der Hof der unbegrenzten Möglichkeiten. Bodenständigkeit mit italienischem Flair – genau das richtige Maß zwischen authentisch und besonders. Alpenpanorama inklusive.",
     details: [
       "3× Übernachtungen (Mindestaufenthalt)",
@@ -199,8 +196,9 @@ const experiences = [
     travelTime: "45min mit dem Auto • 1h 15min mit der Bahn",
     duration: "3 Tage",
     groupSize: "2 Personen",
-    price: "650€",
-    originalPrice: "750€",
+    price: "950€",
+    originalPrice: "1.020€",
+    septemberOffer: true,
     description: "Bayerische Tradition, neu interpretiert. Der Ort, an dem sich euer München-Herz zu Hause fühlt – nur schöner. Hier trifft spektakuläre vegetarische Küche auf Bavarian Sashimi.",
     details: [
       "2× Übernachtungen im Design-Refugium",
@@ -359,26 +357,25 @@ const ExperienceCard = ({ experience, index, isExpanded, onToggle }) => {
         </p>
         
         {/* Title */}
-        <h3 className="text-2xl font-semibold text-gray-900 leading-tight">
-          {experience.title}
-        </h3>
+        <div className="flex items-start justify-between">
+          <h3 className="text-2xl font-semibold text-gray-900 leading-tight flex-1">
+            {experience.title}
+          </h3>
+          {experience.septemberOffer && (
+            <div className="ml-4 flex-shrink-0">
+              {/* Elegant September Badge - matching brand style */}
+              <div className="section-badge bg-sage-50 border border-sage-200">
+                <Clock className="w-3 h-3 text-sage-500" />
+                <p className="text-caption text-sage-700 font-medium">September</p>
+              </div>
+            </div>
+          )}
+        </div>
         
         {/* Travel Time */}
         <div className="flex items-center space-x-2 text-sm text-sage-600 font-medium">
           <Clock className="w-4 h-4" />
           <span>{experience.travelTime}</span>
-        </div>
-
-        {/* Price */}
-        <div className="flex items-center space-x-3">
-          <div className="text-2xl font-bold text-gray-900">
-            {experience.price}
-          </div>
-          {experience.originalPrice && (
-            <div className="text-lg text-gray-400 line-through">
-              {experience.originalPrice}
-            </div>
-          )}
         </div>
 
         {/* Expandable Content */}
@@ -490,6 +487,48 @@ const ExperienceCard = ({ experience, index, isExpanded, onToggle }) => {
                       <p className="text-sm italic text-gray-700 text-center">"{experience.testimonial}"</p>
                     </div>
                   )}
+
+                  {/* Price - Positioned after value is established */}
+                  <div className={`rounded-lg p-4 mb-4 ${experience.septemberOffer ? 'bg-gradient-to-br from-sage-50 to-sage-100 border border-sage-200' : 'bg-sage-50'}`}>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-3">
+                        <div className="text-xl font-semibold text-gray-900">
+                          {experience.price}
+                        </div>
+                        {experience.originalPrice && (
+                          <div className="text-lg text-gray-400 line-through">
+                            {experience.originalPrice}
+                          </div>
+                        )}
+                      </div>
+                      <div className="text-right">
+                        <div className="text-sm text-sage-600 font-medium">Alles inklusive</div>
+                        {experience.originalPrice && (
+                          <div className="text-xs text-gray-500">Wert: {experience.originalPrice}</div>
+                        )}
+                      </div>
+                    </div>
+                    {experience.septemberOffer && (
+                      <div className="mt-3 pt-3 border-t border-sage-200">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center space-x-3">
+                            <div className="bg-gradient-to-r from-sage-500 to-sage-600 text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-md">
+                              SEPTEMBER ANGEBOT
+                            </div>
+                            <div className="text-sm text-sage-700 font-semibold">
+                              Exklusiv für September
+                            </div>
+                          </div>
+                          <div className="text-xs text-sage-600 font-medium">
+                            Begrenzte Verfügbarkeit
+                          </div>
+                        </div>
+                        <div className="mt-2 text-xs text-sage-700 italic">
+                          ✨ Diese außergewöhnlichen Erlebnisse sind normalerweise nicht zu diesem Preis verfügbar
+                        </div>
+                      </div>
+                    )}
+                  </div>
                   
                   <button 
                     onClick={(e) => {
@@ -541,6 +580,33 @@ const ExperienceCard = ({ experience, index, isExpanded, onToggle }) => {
                     <X className="w-6 h-6" />
                   </button>
                 </div>
+
+                {/* September Offer Message */}
+                {experience.septemberOffer && (
+                  <div className="px-6 pt-4 pb-2">
+                    <div className="bg-gradient-to-r from-sage-50 to-sage-100 border border-sage-200 rounded-lg p-4">
+                      <div className="flex items-center space-x-3 mb-3">
+                        <div className="bg-gradient-to-r from-sage-500 to-sage-600 text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-md">
+                          SEPTEMBER ANGEBOT
+                        </div>
+                        <span className="text-sm text-sage-700 font-semibold">
+                          Exklusiv für September
+                        </span>
+                      </div>
+                      <div className="space-y-2">
+                        <p className="text-sm text-sage-800 font-medium">
+                          Bei Buchung im September: <span className="font-bold text-lg">{experience.price}</span> statt <span className="line-through">{experience.originalPrice}</span>
+                        </p>
+                        <p className="text-xs text-sage-700 italic">
+                          ✨ Diese außergewöhnlichen Erlebnisse sind normalerweise nicht zu diesem Preis verfügbar
+                        </p>
+                        <p className="text-xs text-sage-600 font-medium">
+                          Begrenzte Verfügbarkeit • Nur für September-Buchungen
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
 
                 {/* Form */}
                 <form onSubmit={handleReservationSubmit} className="p-6 space-y-6">
@@ -830,6 +896,7 @@ const ExperiencesShowcase = () => {
           <p className="text-body max-w-2xl mx-auto text-editorial-700 mb-8">
             Handverlesene Wochenendtrips im Umkreis von 400km – für alle, die das Außergewöhnliche im scheinbar Gewöhnlichen finden.
           </p>
+          
         </motion.div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12 lg:gap-16">

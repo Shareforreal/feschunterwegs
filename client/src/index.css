@@ -110,6 +110,22 @@
     background: linear-gradient(135deg, #fefdfb 0%, #fdf9f3 50%, #faf2e6 100%);
   }
   
+  .offer-badge {
+    width: 32px !important;
+    height: 32px !important;
+    background-color: #8a9e8a !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  
+  .offer-badge-icon {
+    width: 20px !important;
+    height: 20px !important;
+    color: white !important;
+  }
+  
   .floating-shape {
     position: absolute;
     border-radius: 50%;
