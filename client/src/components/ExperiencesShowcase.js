@@ -369,6 +369,17 @@ const ExperienceCard = ({ experience, index, isExpanded, onToggle }) => {
           <span>{experience.travelTime}</span>
         </div>
 
+        {/* Price */}
+        <div className="flex items-center space-x-3">
+          <div className="text-2xl font-bold text-gray-900">
+            {experience.price}
+          </div>
+          {experience.originalPrice && (
+            <div className="text-lg text-gray-400 line-through">
+              {experience.originalPrice}
+            </div>
+          )}
+        </div>
 
         {/* Expandable Content */}
         <AnimatePresence>

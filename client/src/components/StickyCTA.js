@@ -39,12 +39,12 @@ const StickyCTA = () => {
           initial={{ y: 100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 100, opacity: 0 }}
-          className="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-40 max-w-md w-full mx-4"
+          className="fixed bottom-4 sm:bottom-6 left-1/2 transform -translate-x-1/2 z-40 max-w-md w-full mx-4"
         >
           <div className="bg-sage-50 rounded-lg shadow-2xl border border-sage-200 p-3 sm:p-4">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between gap-2">
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-gray-900 mb-1 truncate">
+                <p className="text-sm font-semibold text-gray-900 mb-1">
                   Deine perfekten Trips warten
                 </p>
                 <p className="text-xs text-gray-600 hidden sm:block">
@@ -52,10 +52,10 @@ const StickyCTA = () => {
                 </p>
               </div>
               
-              <div className="flex items-center space-x-2 flex-shrink-0">
+              <div className="flex items-center space-x-1 sm:space-x-2 flex-shrink-0">
                 <button
                   onClick={scrollToQuiz}
-                  className="btn-sage px-3 sm:px-4 py-2 text-xs sm:text-sm flex items-center space-x-1"
+                  className="btn-sage px-2 sm:px-4 py-2 text-xs sm:text-sm flex items-center space-x-1 whitespace-nowrap"
                 >
                   <span className="hidden sm:inline">Quiz starten</span>
                   <span className="sm:hidden">Start</span>
@@ -64,7 +64,7 @@ const StickyCTA = () => {
                 
                 <button
                   onClick={handleDismiss}
-                  className="text-gray-400 hover:text-gray-600 p-1"
+                  className="text-gray-400 hover:text-gray-600 p-1 flex-shrink-0"
                 >
                   <X className="w-4 h-4" />
                 </button>
