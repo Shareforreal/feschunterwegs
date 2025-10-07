@@ -1,0 +1,65 @@
+{
+  "timestamp": "2025-10-03T11:17:15.299Z",
+  "environment": "production",
+  "baseUrl": "https://feschunterwegs.com",
+  "duration": 7220,
+  "summary": {
+    "passed": 3,
+    "failed": 2,
+    "successRate": 60
+  },
+  "tests": [
+    {
+      "name": "Website Availability",
+      "status": "FAILED",
+      "error": {
+        "message": "Request failed with status code 500",
+        "status": 500,
+        "data": {
+          "error": "Something went wrong!"
+        }
+      }
+    },
+    {
+      "name": "Database Connection",
+      "status": "FAILED",
+      "error": {
+        "message": "Request failed with status code 500",
+        "status": 500,
+        "data": {
+          "error": "Something went wrong!"
+        }
+      }
+    },
+    {
+      "name": "Quiz Submission",
+      "status": "PASSED",
+      "response": {
+        "success": true,
+        "message": "Quiz submission saved successfully",
+        "id": 15,
+        "quizId": "QU8PTA"
+      }
+    },
+    {
+      "name": "Experience Reservation",
+      "status": "PASSED",
+      "response": {
+        "success": true,
+        "message": "Reservation request saved successfully",
+        "id": 12,
+        "bookingId": "EGHEKG"
+      }
+    },
+    {
+      "name": "Newsletter Subscription",
+      "status": "PASSED",
+      "response": {
+        "success": true,
+        "message": "Exit intent subscription saved successfully",
+        "id": 4,
+        "subscriptionId": "EC7B38"
+      }
+    }
+  ]
+}

@@ -136,7 +136,7 @@ const SocialProof = () => {
   const totalSlides = Math.ceil(reviews.length / 4);
 
   return (
-    <section className="section-padding bg-warm-50 border-b border-warm-200">
+    <section id="reviews" className="section-padding bg-warm-50 border-b border-warm-200">
       <div className="container-editorial">
         <motion.div 
           className="text-center mb-20"
@@ -147,7 +147,7 @@ const SocialProof = () => {
         >
           <div className="section-badge mb-6">
             <div className="section-badge-dot"></div>
-            <p className="text-caption">Unsere Wirkung</p>
+            <p className="text-caption">Liebespost</p>
           </div>
           <h2 className="text-section mb-6 text-editorial-900">
             Was passiert, wenn ihr uns vertraut.

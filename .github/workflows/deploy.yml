@@ -1,0 +1,101 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: |
+        npm install
+        cd client && npm install
+        
+    - name: Build application
+      run: |
+        cd client && npm run build
+        
+    - name: Create deployment package
+      run: |
+        mkdir -p deployment-package
+        cp server.js deployment-package/
+        cp package.json deployment-package/
+        cp ecosystem.config.js deployment-package/
+        cp production.env deployment-package/
+        cp -r client/build deployment-package/client/
+        tar -czf deployment.tar.gz -C deployment-package .
+        
+    - name: Upload to production server
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: 87.106.98.103
+        username: support
+        password: ${{ secrets.SERVER_PASSWORD }}
+        script: |
+          # Create backup
+          sudo mkdir -p /var/backups/feschunterwegs
+          if [ -d '/var/www/feschunterwegs' ] && [ "$(ls -A '/var/www/feschunterwegs')" ]; then
+            sudo tar -czf /var/backups/feschunterwegs/feschunterwegs_backup_$(date +%Y%m%d_%H%M%S).tar.gz -C /var/www/feschunterwegs .
+          fi
+          
+          # Stop application
+          pm2 stop feschunterwegs || true
+          
+          # Create temp directory
+          mkdir -p /home/support/deployment_temp
+          
+    - name: Upload deployment files
+      uses: appleboy/scp-action@v0.1.4
+      with:
+        host: 87.106.98.103
+        username: support
+        password: ${{ secrets.SERVER_PASSWORD }}
+        source: "deployment.tar.gz"
+        target: "/home/support/deployment_temp/"
+        
+    - name: Deploy application
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: 87.106.98.103
+        username: support
+        password: ${{ secrets.SERVER_PASSWORD }}
+        script: |
+          cd /home/support/deployment_temp
+          tar -xzf deployment.tar.gz
+          
+          # Deploy with sudo
+          echo '${{ secrets.SUDO_PASSWORD }}' | sudo -S cp server.js /var/www/feschunterwegs/
+          echo '${{ secrets.SUDO_PASSWORD }}' | sudo -S cp package.json /var/www/feschunterwegs/
+          echo '${{ secrets.SUDO_PASSWORD }}' | sudo -S cp ecosystem.config.js /var/www/feschunterwegs/
+          echo '${{ secrets.SUDO_PASSWORD }}' | sudo -S cp production.env /var/www/feschunterwegs/
+          echo '${{ secrets.SUDO_PASSWORD }}' | sudo -S rm -rf /var/www/feschunterwegs/client
+          echo '${{ secrets.SUDO_PASSWORD }}' | sudo -S cp -r client /var/www/feschunterwegs/
+          
+          # Set permissions
+          echo '${{ secrets.SUDO_PASSWORD }}' | sudo -S chown -R www-data:www-data /var/www/feschunterwegs
+          echo '${{ secrets.SUDO_PASSWORD }}' | sudo -S chmod -R 755 /var/www/feschunterwegs
+          
+          # Install dependencies and start
+          cd /var/www/feschunterwegs
+          echo '${{ secrets.SUDO_PASSWORD }}' | sudo -S npm install --production
+          cp production.env .env
+          pm2 start ecosystem.config.js --env production
+          pm2 save
+          
+          # Cleanup
+          rm -rf /home/support/deployment_temp/*
+          
+          echo "Deployment completed successfully!"

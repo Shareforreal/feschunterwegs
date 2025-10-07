@@ -21,10 +21,10 @@ const questions = [
     question: 'Wie sieht euer Zuhause auf Zeit aus?',
     options: [
       { value: 'luxury', label: '🛎️ Luxuriös\nInfinity Pool, Butler-Service und Designer-Suiten, die keine Wünsche offen lassen' },
-      { value: 'boutique', label: '💄 Boutique\nStilvolle Hideaways mit individuellem Design und persönlichem Service zum Verlieben' },
-      { value: 'charming', label: '🕯️ Traditionell\nJahrhundertealte Mauern, authentische Geschichten und Wein mit dem Gastgeber' },
-      { value: 'unique', label: '✨ Außergewöhnlich\nUnter Sternen schlafen, im Baumhaus träumen oder in Burgen residieren' },
-      { value: 'remote', label: '🏔️ Zurückgezogen\nVersteckte Refugien in der Natur, perfekt zum Abschalten und gemeinsame Zeit genießen' }
+      { value: 'family', label: '🤌🏻 Familiengeführt\nTraditionelle Gastfreundschaft mit herzlichem Service und regionaler Küche' },
+      { value: 'design', label: '🍸 Designorientiert\nStilvolle Hideaways mit individuellem Design und persönlichem Service zum Verlieben' },
+      { value: 'remote', label: '🏔️ Abgelegen\nVersteckte Refugien in der Natur, perfekt zum Abschalten und gemeinsame Zeit genießen' },
+      { value: 'unique', label: '✨ Außergewöhnlich\nUnter Sternen schlafen, im Baumhaus träumen oder in Burgen residieren' }
     ]
   },
   {
@@ -210,13 +210,13 @@ const Quiz = () => {
         >
           <div className="section-badge mb-6">
             <div className="section-badge-dot"></div>
-            <p className="text-caption">Unser Gespür</p>
+            <p className="text-caption">Maßgeschneidert</p>
           </div>
           <h2 className="text-section mb-6 text-editorial-900">
             Euer perfekter Lifestyle-Trip wartet
           </h2>
           <p className="text-body max-w-2xl mx-auto text-editorial-700 mb-8">
-            Nach Jahren im Geschäft wissen wir: Es braucht nur 3 richtige Fragen, um euren Traumtrip zu finden. Während andere euch 50 Filter vorsetzen, haben wir es auf das Wesentliche reduziert. Quiz ausfüllen, perfekte Empfehlung bekommen – so einfach ist das.
+            Nach Jahren im Geschäft wissen wir: Es braucht nur 4 richtige Fragen, um euren Traumtrip zu finden. Während andere euch 50 Filter vorsetzen, haben wir es auf das Wesentliche reduziert. Quiz ausfüllen, perfekte Empfehlung bekommen – so einfach ist das.
           </p>
         </motion.div>
 
@@ -371,14 +371,15 @@ const Quiz = () => {
                 </div>
                 
                 <div className="text-center mb-12">
-                  <div className="w-20 h-20 bg-editorial-100 rounded-lg flex items-center justify-center mx-auto mb-8 shadow-sm">
-                    <Mail className="w-10 h-10 text-editorial-700" />
+                  <div className="w-20 h-20 bg-coral-100 rounded-lg flex items-center justify-center mx-auto mb-8 shadow-sm">
+                    <Mail className="w-10 h-10 text-coral-700" />
                   </div>
                   <h3 className="text-2xl font-medium mb-6 text-editorial-900 font-playfair">
-                    Eure perfekten Auszeiten warten bereits.
+                    Da schau her – deine Traumauszeiten sind fertig!
                   </h3>
                   <p className="text-body max-w-2xl mx-auto text-editorial-700 font-sans">
-                    Basierend auf euren Antworten kuratieren wir handverlesene Erlebnisse. Tragt eure E-Mail ein und wir schicken sie euch – mit allem, was ihr wissen müsst.
+                    Perfekte Schmankerl, handverlesen für dich.<br />
+                    Wohin dürfen wir sie schicken?
                   </p>
                 </div>
                 
@@ -403,7 +404,7 @@ const Quiz = () => {
                     />
                   </div>
                   
-                  <div className="mb-8 text-left space-y-4">
+                  <div className="mb-8 text-left">
                     <label className="flex items-start space-x-3 cursor-pointer">
                       <input
                         type="checkbox"
@@ -414,16 +415,6 @@ const Quiz = () => {
                         Ich akzeptiere die <a href="/agb" className="text-coral-500 hover:text-coral-600 underline">AGB</a> und <a href="/datenschutz" className="text-coral-500 hover:text-coral-600 underline">Datenschutzbestimmungen</a> *
                       </span>
                     </label>
-                    
-                    <label className="flex items-start space-x-3 cursor-pointer">
-                      <input
-                        type="checkbox"
-                        className="mt-1 w-4 h-4 text-coral-500 border-editorial-300 rounded focus:ring-coral-500"
-                      />
-                      <span className="text-sm text-editorial-700 font-sans">
-                        Ja, ich möchte die ersten sein, die von neuen Geheimtipps und exklusiven Angeboten erfahren – direkt in meinem Postfach
-                      </span>
-                    </label>
                   </div>
                   
                   <button
@@ -431,7 +422,7 @@ const Quiz = () => {
                     disabled={isSubmitting}
                     className="w-64 mx-auto bg-coral-500 text-white text-lg py-6 rounded-lg font-semibold hover:bg-coral-600 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl font-sans"
                   >
-                    {isSubmitting ? 'Wird gesendet...' : 'Empfehlungen erhalten'}
+                    {isSubmitting ? 'Wird gesendet...' : 'Jetzt her damit!'}
                   </button>
                 </form>
               </motion.div>

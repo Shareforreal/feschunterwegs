@@ -57,7 +57,7 @@ const HowItWorks = () => {
         >
           <div className="section-badge mb-6">
             <div className="section-badge-dot"></div>
-            <p className="text-caption">Unser Prozess</p>
+            <p className="text-caption">Fix g'macht</p>
           </div>
           <h2 className="text-section mb-8 text-editorial-900">
             Drei Schritte zum perfekten Moment.

@@ -39,9 +39,9 @@
   
   .text-hero {
     @apply font-light;
-    font-size: clamp(2.5rem, 5vw, 4rem);
-    line-height: 1.1;
-    letter-spacing: -0.02em;
+    font-size: clamp(1.8rem, 4.5vw, 3.5rem);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
   }
   
   .text-display {
@@ -59,8 +59,8 @@
   
   .text-body {
     @apply text-editorial-700;
-    font-size: 1.125rem;
-    line-height: 1.7;
+    font-size: clamp(0.9rem, 2.2vw, 1.125rem);
+    line-height: 1.5;
   }
   
   .text-caption {

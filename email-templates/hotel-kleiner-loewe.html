@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deine perfekten Trips warten</title>
+    <!--[if mso]>
+    <noscript>
+        <xml>
+            <o:OfficeDocumentSettings>
+                <o:AllowPNG/>
+                <o:PixelsPerInch>96</o:PixelsPerInch>
+            </o:OfficeDocumentSettings>
+        </xml>
+    </noscript>
+    <![endif]-->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #fefdfb;
+            color: #4a4a4a;
+            line-height: 1.6;
+        }
+        
+        .email-container {
+            max-width: 680px;
+            margin: 0 auto;
+            background-color: #FFFFFF;
+        }
+        
+        .header {
+            background-color: #FFFFFF;
+            padding: 40px 40px 20px;
+            text-align: center;
+            border-bottom: 1px solid #e8e8e8;
+        }
+        
+        .logo-img {
+            height: 40px;
+            margin: 0 auto;
+        }
+        
+        /* Mobile logo sizing */
+        @media only screen and (max-width: 600px) {
+            .logo-img {
+                height: 50px;
+                width: auto;
+                max-width: 200px;
+            }
+        }
+        
+        /* Desktop Apple Mail fixes */
+        @media screen and (-webkit-min-device-pixel-ratio: 0) {
+            .gallery-image {
+                /* Removed transform properties that were causing skewing */
+            }
+        }
+        
+        .hero {
+            background-color: #FFFFFF;
+            padding: 50px 40px;
+            text-align: center;
+        }
+        
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 36px;
+            font-weight: 300;
+            color: #1a1a1a;
+            margin: 0 0 16px;
+            line-height: 1.2;
+        }
+        
+        .hero-subtitle {
+            font-size: 18px;
+            color: #7a7a7a;
+            margin: 0 0 30px;
+            line-height: 1.5;
+        }
+        
+        .personalization {
+            background-color: transparent;
+            padding: 24px;
+            margin: 0 auto;
+            max-width: 500px;
+            text-align: left;
+        }
+        
+        .personalization-text {
+            font-size: 16px;
+            color: #4a4a4a;
+            line-height: 1.6;
+            margin: 0;
+        }
+        
+        .personalization-text strong {
+            color: #ff6b6b;
+            font-weight: 600;
+        }
+        
+        .content {
+            padding: 50px 40px;
+        }
+        
+        .trip-card {
+            background-color: #FFFFFF;
+            border: 1px solid #e8e8e8;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 2px 4px rgba(0, 0, 0, 0.06);
+        }
+        
+        .trip-content {
+            padding: 32px;
+        }
+        
+        .trip-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 300;
+            color: #1a1a1a;
+            margin: 0 0 8px;
+            line-height: 1.3;
+        }
+        
+        .trip-subtitle {
+            font-size: 15px;
+            color: #8a9e8a;
+            margin: 0 0 20px;
+            line-height: 1.5;
+        }
+        
+        .trip-description {
+            font-size: 16px;
+            color: #4a4a4a;
+            margin: 0 0 24px;
+            line-height: 1.7;
+        }
+        
+        .highlights {
+            background-color: #f7f8f7;
+            border-left: 4px solid #8a9e8a;
+            padding: 20px 24px;
+            margin: 0 0 24px;
+        }
+        
+        .highlights-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin: 0 0 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .highlight-item {
+            font-size: 15px;
+            color: #4a4a4a;
+            margin: 0 0 18px;
+            line-height: 1.5;
+        }
+        
+        .highlight-item strong {
+            font-weight: 600;
+            color: #1a1a1a;
+            display: block;
+            margin-bottom: 2px;
+        }
+        
+        .highlight-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .perfect-for {
+            background: linear-gradient(135deg, #f7f8f7 0%, #eef1ee 100%);
+                border-radius: 0px;
+            padding: 20px;
+            margin: 0 0 24px;
+        }
+        
+        .perfect-for-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #8a9e8a;
+            margin: 0 0 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .perfect-for-text {
+            font-size: 15px;
+            color: #1a1a1a;
+            margin: 0;
+            line-height: 1.6;
+        }
+        
+        .price-cta-container {
+            display: table;
+            width: 100%;
+            border-top: 1px solid #e8e8e8;
+            padding-top: 24px;
+        }
+        
+        .price-section {
+            display: table-cell;
+            vertical-align: middle;
+            width: 50%;
+        }
+        
+        .price-label {
+            font-size: 14px;
+            color: #8a9e8a;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .price {
+            font-family: 'Playfair Display', serif;
+            font-size: 36px;
+            font-weight: 300;
+            color: #1a1a1a;
+            margin: 0;
+            line-height: 1;
+        }
+        
+        .price-detail {
+            font-size: 13px;
+            color: #8a9e8a;
+            margin: 4px 0 0;
+        }
+        
+        .cta-section {
+            display: table-cell;
+            vertical-align: middle;
+            width: 50%;
+            text-align: right;
+        }
+        
+        .testimonial {
+            background-color: #f7f8f7;
+                border-radius: 0px;
+            padding: 20px;
+            margin: 24px 0 0;
+        }
+        
+        .testimonial-text {
+            font-size: 15px;
+            color: #1a1a1a;
+            font-style: normal;
+            margin: 0 0 8px;
+            line-height: 1.6;
+            font-weight: normal;
+        }
+
+        .testimonial-author {
+            font-size: 13px;
+            color: #8a9e8a;
+            margin: 0;
+            font-weight: normal;
+        }
+        
+        .footer {
+            background-color: #f7f8f7;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .footer-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-weight: 300;
+            color: #1a1a1a;
+            margin: 0 0 16px;
+        }
+        
+        .footer-subtitle {
+            font-size: 16px;
+            color: #7a7a7a;
+            margin: 0 0 30px;
+            line-height: 1.5;
+        }
+        
+        .contact-method {
+            display: inline-block;
+            margin: 0 15px;
+            color: #8a9e8a !important;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .footer-note {
+            font-size: 12px;
+            color: #8a8a8a;
+            margin: 30px 0 0;
+            line-height: 1.5;
+        }
+        
+        /* Responsive Design */
+        @media only screen and (max-width: 600px) {
+            .email-container {
+                width: 100% !important;
+                max-width: 100% !important;
+                margin: 0 !important;
+            }
+            
+            .hero {
+                padding: 30px 0px;
+            }
+            
+            .hero-title {
+                font-size: 28px;
+            }
+            
+            .content {
+                padding: 30px 20px;
+            }
+            
+            .trip-content {
+                padding: 20px;
+            }
+            
+            .price-cta-container {
+                display: block;
+            }
+            
+            .price-section,
+            .cta-section {
+                display: block;
+                text-align: center;
+                margin-bottom: 20px;
+            }
+            
+            .footer {
+                padding: 30px 20px;
+            }
+            
+            .contact-method {
+                display: block;
+                margin: 10px 0;
+            }
+            
+            .header {
+                padding: 40px 0px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <!-- Header -->
+        <div class="header">
+            <img src="https://feschunterwegs.com/images/Branding/Feschunterwegs_Logo_Coral.png" alt="feschunterwegs" class="logo-img" style="height: 40px; display: block; border: 0; margin: 0 auto; max-width: 200px; width: auto;">
+        </div>
+        
+        <!-- Hero Section -->
+        <div class="hero">
+            <h2 class="hero-title">Da schau her – <br>hier sind deine Traumauszeiten.</h2>
+            <p class="hero-subtitle">Perfekte Schmankerl, handverlesen für dich.</p>
+            
+            <!-- Personalization -->
+            <div class="personalization">
+                <p class="personalization-text">
+                    <strong>Basierend auf deinem Quiz</strong> suchst du besondere kulturelle Erlebnisse in einer historischen Stadt und möchtest dabei auf Sport, Shopping und Wellness nicht verzichten. Wir haben etwas Besonderes für dich zusammengestellt:
+                </p>
+            </div>
+        </div>
+        
+        <!-- Content Section -->
+        <div class="content">
+            <!-- Trip Card 1: Premium -->
+            <div class="trip-card">
+                <!-- 6-Image Gallery -->
+                <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-spacing: 0;">
+                    <tr>
+                        <td width="50%" style="padding: 0px; mso-padding-alt: 0px;">
+                            <img src="https://feschunterwegs.com/images/Winternitz_Villa_Wohnzimmer.webp" alt="Villa Winternitz Wohnzimmer" width="300" height="300" style="width: 300px; height: 300px; display: block; border: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; object-fit: cover;">
+                        </td>
+                        <td width="50%" style="padding: 0px; mso-padding-alt: 0px;">
+                            <img src="https://feschunterwegs.com/images/Winternitz_Villa_Gedeckter_Gruehstueckstisch.webp" alt="Villa Winternitz Gedeckter Frühstückstisch" width="300" height="300" style="width: 300px; height: 300px; display: block; border: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="50%" style="padding: 0px; mso-padding-alt: 0px;">
+                            <img src="https://feschunterwegs.com/images/Winternitz_Villa_Schlafzimmer.webp" alt="Villa Winternitz Schlafzimmer" width="300" height="300" style="width: 300px; height: 300px; display: block; border: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic;">
+                        </td>
+                        <td width="50%" style="padding: 0px; mso-padding-alt: 0px;">
+                            <img src="https://feschunterwegs.com/images/Winternitz_Villa_Badezimmer.webp" alt="Villa Winternitz Bad" width="300" height="300" style="width: 300px; height: 300px; display: block; border: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="50%" style="padding: 0px; mso-padding-alt: 0px;">
+                            <img src="https://feschunterwegs.com/images/Winternitz_Villa_Garten.webp" alt="Villa Winternitz Garten" width="300" height="300" style="width: 300px; height: 300px; display: block; border: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic;">
+                        </td>
+                        <td width="50%" style="padding: 0px; mso-padding-alt: 0px;">
+                            <img src="https://feschunterwegs.com/images/Winternitz_Villa_Aussenansicht_Nacht.webp" alt="Villa Winternitz Außen" width="300" height="300" style="width: 300px; height: 300px; display: block; border: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic;">
+                        </td>
+                    </tr>
+                </table>
+                <div class="trip-content">
+                    <h3 class="trip-title">Schlafen im Meisterwerk von Adolf Loos</h3>
+                    <p class="trip-subtitle">Villa Winternitz | Architektur & Kultur in Prag</p>
+                    
+                    <p class="trip-description">
+                        Das letzte von Adolf Loos entworfene Privathaus. Ein weißer Kubus auf dem Hügel, der euch exklusiv gehört, sobald die Führungen enden. Hier schlaft ihr in der Geschichte der Moderne, umgeben von Obstbäumen und mit unverbautem Blick über die "Stadt der hundert Türme".
+                    </p>
+                    
+                    <div class="highlights">
+                        <p class="highlights-title">Das erwartet euch:</p>
+                        <p class="highlight-item"><strong>3 Übernachtungen exklusiv für euch</strong> – Die Villa gehört euch nach Führungsende</p>
+                        <p class="highlight-item"><strong>3x Frühstück auf der Dachterrasse</strong> – 360° Blick über Prag</p>
+                        <p class="highlight-item"><strong>Private Adolf Loos Architektur-Wanderung</strong> – Prags Moderne entdecken</p>
+                        <p class="highlight-item"><strong>Kafka & Moderne Literatur-Tour</strong> – Private Lesung inklusive</p>
+                        <p class="highlight-item"><strong>Bike Tour entlang der Moldau</strong> – 25 km durch Prags Parks</p>
+                        <p class="highlight-item"><strong>Böhmische Kristall Shopping-Expedition</strong> – Handverlesene Ateliers</p>
+                        <p class="highlight-item"><strong>Wellness im historischen Badehaus</strong> – 500 Jahre alte Thermalbäder</p>
+                    </div>
+                    
+                    <div class="perfect-for">
+                        <p class="perfect-for-label">Perfekt für euch, weil:</p>
+                        <p class="perfect-for-text">
+                            Ihr schlaft in einem echten Architektur-Meisterwerk, das normalerweise nur für Führungen zugänglich ist – und habt es nachts ganz für euch allein.
+                        </p>
+                    </div>
+                    
+                    <div class="price-cta-container">
+                        <div class="price-section">
+                            <p class="price-label">ab</p>
+                            <p class="price">€600</p>
+                            <p class="price-detail">pro Nacht für 2 Personen | Alles inklusive</p>
+                        </div>
+                        <div class="cta-section">
+                            <table border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td style="background: #ff6b6b; border-radius: 8px;">
+                                        <a href="mailto:servus@feschunterwegs.com?subject=Villa%20Winternitz%20Prag&body=Servus%20Marie%2C%0A%0ADer%20Kurztrip%20nach%20Prag%20und%20Villa%20Winternitz%20sehen%20super%20aus.%20Kannst%20du%20bitte%20für%20mich%20die%20Verfügbarkeiten%20wie%20folgt%20prüfen%3F%0A%0AGewünschter%20Reisezeitraum%3A%0AAnzahl%20Personen%3A%0ABesondere%20Wünsche%3A%0A%0AVielen%20Dank%21" style="display: inline-block; padding: 18px 36px; color: #FFFFFF; text-decoration: none; font-size: 16px; font-weight: 600;">Da will ich hin!</a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="testimonial">
+                        <p class="testimonial-text">
+                            "Die private Kafka-Lesung in diesem historischen Café war magisch – unser Guide hat uns die Stadt durch Kafkas Augen gezeigt. Und die Bike Tour entlang der Moldau? 25km durch Prags Parks, einfach atemberaubend!"
+                        </p>
+                        <p class="testimonial-author">— Lisa & Marco, Berlin</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Trip Card 3: Alternative -->
+            <div class="trip-card">
+                <!-- 6-Image Gallery -->
+                <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-spacing: 0;">
+                    <tr>
+                        <td width="50%" style="padding: 0px; mso-padding-alt: 0px;">
+                            <img src="https://feschunterwegs.com/images/Kleiner-Loewe_Aussenansicht.jpg" alt="Hotel Kleiner Löwe Aussenansicht" width="300" height="300" style="width: 300px; height: 300px; display: block; border: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic;">
+                        </td>
+                        <td width="50%" style="padding: 0px; mso-padding-alt: 0px;">
+                            <img src="https://feschunterwegs.com/images/Kleiner-Loewe_Badezimmer.jpg" alt="Hotel Kleiner Löwe Badezimmer" width="300" height="300" style="width: 300px; height: 300px; display: block; border: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="50%" style="padding: 0px; mso-padding-alt: 0px;">
+                            <img src="https://feschunterwegs.com/images/Kleiner-Loewe_Bodenseesteg_Schlafzimmer.jpg" alt="Hotel Kleiner Löwe Bodenseesteg Schlafzimmer" width="300" height="300" style="width: 300px; height: 300px; display: block; border: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic;">
+                        </td>
+                        <td width="50%" style="padding: 0px; mso-padding-alt: 0px;">
+                            <img src="https://feschunterwegs.com/images/Kleiner-Loewe_Bodenseesteg.jpg" alt="Hotel Kleiner Löwe Bodenseesteg" width="300" height="300" style="width: 300px; height: 300px; display: block; border: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="50%" style="padding: 0px; mso-padding-alt: 0px;">
+                            <img src="https://feschunterwegs.com/images/Kleiner-Loewe_Capuccino.jpg" alt="Hotel Kleiner Löwe Capuccino" width="300" height="300" style="width: 300px; height: 300px; display: block; border: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic;">
+                        </td>
+                        <td width="50%" style="padding: 0px; mso-padding-alt: 0px;">
+                            <img src="https://feschunterwegs.com/images/Kleiner-Loewe_Fruehstuecksraum.jpg" alt="Hotel Kleiner Löwe Frühstücksraum" width="300" height="300" style="width: 300px; height: 300px; display: block; border: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic;">
+                        </td>
+                    </tr>
+                </table>
+                <div class="trip-content">
+                    <h3 class="trip-title">Architektur-Juwel am Bodensee</h3>
+                    <p class="trip-subtitle">Hotel Kleiner Löwe | Design & Kultur in Bregenz</p>
+                    
+                    <p class="trip-description">
+                        Das letzte Meisterwerk der berühmten Basler Architekten Herzog & de Meuron. Ein historisches Jugendstil-Haus, das sie 2024 zu einem 8-Zimmer Boutique-Hotel verwandelten. Hier schlaft ihr in zeitloser Eleganz, umgeben von höchster Baukultur und nur 2 Minuten vom Bodensee entfernt.
+                    </p>
+                    
+                    <div class="highlights">
+                        <p class="highlights-title">Das erwartet euch:</p>
+                        <p class="highlight-item"><strong>2 Übernachtungen im Herzog & de Meuron Design-Hotel</strong> – Schlafen in einem architektonischen Meisterwerk</p>
+                        <p class="highlight-item"><strong>2x Frühstück mit Panoramablick</strong> – Frisch. Regional. Unvergesslich.</p>
+                        <p class="highlight-item"><strong>Private Architektur-Tour zu den Krumbach-Bushaltestellen</strong> – Moderne Meisterwerke mitten in der Natur</p>
+                        <p class="highlight-item"><strong>Kunsthaus Bregenz mit privater Führung</strong> – Zeitgenössische Kunst, die begeistert</p>
+                        <p class="highlight-item"><strong>Pfänderberg-Wanderung mit 360° Bodensee-Panorama</strong> – Staunen. Atmen. Genießen.</p>
+                        <p class="highlight-item"><strong>Wochenmarkt mit regionalen Spezialitäten</strong> – Käse. Speck. Marmelade. Direkt vom Erzeuger.</p>
+                        <p class="highlight-item"><strong>Tui Na Massage mit Schröpfen-Rückenbehandlung</strong> – Traditionelle Heilkunst für pure Entspannung</p>
+                    </div>
+                    
+                    <div class="perfect-for">
+                        <p class="perfect-for-label">Perfekt für euch, weil:</p>
+                        <p class="perfect-for-text">
+                            Ihr übernachtet in einem Hotel, das von den weltberühmten Architekten Herzog & de Meuron entworfen wurde – und das nur 8 Zimmer hat. Exklusiver geht's nicht.
+                        </p>
+                    </div>
+                    
+                    <div class="price-cta-container">
+                        <div class="price-section">
+                            <p class="price-label">ab</p>
+                            <p class="price">€500</p>
+                            <p class="price-detail">pro Nacht für 2 Personen | Alles inklusive</p>
+                        </div>
+                        <div class="cta-section">
+                            <table border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td style="background: #ff6b6b; border-radius: 8px;">
+                                        <a href="mailto:servus@feschunterwegs.com?subject=Hotel%20Kleiner%20Loewe%20Bregenz&body=Servus%20Marie%2C%0A%0ADer%20Kurztrip%20nach%20Bregenz%20und%20Hotel%20Kleiner%20L%C3%B6we%20sehen%20super%20aus.%20Kannst%20du%20bitte%20für%20mich%20die%20Verfügbarkeiten%20wie%20folgt%20prüfen%3F%0A%0AGewünschter%20Reisezeitraum%3A%0AAnzahl%20Personen%3A%0ABesondere%20Wünsche%3A%0A%0AVielen%20Dank%21" style="display: inline-block; padding: 18px 36px; color: #FFFFFF; text-decoration: none; font-size: 16px; font-weight: 600;">Da will ich hin!</a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="testimonial">
+                        <p class="testimonial-text">
+                            "Das Kunsthaus Bregenz mit privater Führung war ein Highlight – zeitgenössische Kunst, die wirklich begeistert! Und die Tui Na Massage mit Schröpfen-Rückenbehandlung? Traditionelle Heilkunst für pure Entspannung."
+                        </p>
+                        <p class="testimonial-author">— Julia & Thomas, München</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <h3 class="footer-title">Noch Fragen?</h3>
+            <p class="footer-subtitle">
+                Wir sind da, um dir bei der Planung deines perfekten Trips zu helfen. Melde dich, wie es dir am besten passt!
+            </p>
+            
+            <div style="margin: 30px 0;">
+                <a href="https://wa.me/498912255844" class="contact-method">📱 WhatsApp</a>
+                <a href="mailto:servus@feschunterwegs.com" class="contact-method">📧 Email</a>
+                <a href="tel:+498912255844" class="contact-method">📞 Telefon</a>
+            </div>
+            
+            <p class="footer-note">
+                <strong>Falls die Bilder nicht angezeigt werden:</strong><br>
+                Bitte klicke auf "Bilder anzeigen" in deinem E-Mail-Programm oder öffne die E-Mail in deinem Browser.
+            </p>
+        </div>
+    </div>
+</body>
+</html>

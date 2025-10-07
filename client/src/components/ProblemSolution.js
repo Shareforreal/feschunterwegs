@@ -14,7 +14,7 @@ const ProblemSolution = () => {
         >
           <div className="section-badge mb-6">
             <div className="section-badge-dot"></div>
-            <p className="text-caption">Unser Versprechen</p>
+            <p className="text-caption">Insider-Wissen</p>
           </div>
         </motion.div>
         

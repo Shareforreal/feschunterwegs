@@ -109,7 +109,9 @@ const sendCustomerConfirmation = async (type, data) => {
   try {
     const subject = type === 'quiz'
       ? `Wer ist denn hier so fesch unterwegs? 🥰 #${data.quizId}`
-      : `Wer ist denn hier so fesch unterwegs? 🥰 #${data.bookingId}`;
+      : type === 'reservation'
+      ? `Wer ist denn hier so fesch unterwegs? 🥰 #${data.bookingId}`
+      : `😍 Ab jetzt fesch unterwegs – exklusive Last Minute Deals ab München`;
     
     const html = type === 'quiz'
       ? `
@@ -131,7 +133,8 @@ const sendCustomerConfirmation = async (type, data) => {
         </div>
         </div>
       `
-      : `
+      : type === 'reservation'
+      ? `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
           <p style="font-size: 14px; line-height: 1.5;">Servus ${data.firstName},</p>
           <p style="font-size: 14px; line-height: 1.5;">wow, was für eine tolle Wahl. Deine Reservierungsanfrage für <strong>${data.experience}</strong> ist bei uns eingegangen und wir sind nun fleißig dabei, alles für dich zu organisieren.</p>
@@ -161,6 +164,28 @@ const sendCustomerConfirmation = async (type, data) => {
           </p>
         </div>
         </div>
+      `
+      : `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+          <p style="font-size: 14px; line-height: 1.5;">Servus ${data.firstName || 'liebe Reiselustige'},</p>
+          <p style="font-size: 14px; line-height: 1.5;">ab jetzt bist du Teil unserer Community.</p>
+          <p style="font-size: 14px; line-height: 1.5;">Das heißt: Zugang zu handverlesenen Last Minute Deals und Trips, die wir persönlich getestet haben – nur für dich.</p>
+          <div style="text-align: center; margin: 30px 0;">
+            <a href="https://feschunterwegs.com" style="display: inline-block; background-color: #ff6b6b; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold; font-size: 14px;">👉 Anmeldung bestätigen</a>
+          </div>
+          <p style="font-size: 14px; line-height: 1.5;">Ab dann bringen wir dich zu den Momenten, die du dein Leben lang erzählen wirst.</p>
+        <div style="margin-top: 30px; padding-top: 20px;">
+          <p style="margin: 0 0 6px 0; font-size: 13px;">Pfiat di,<br>Marie</p>
+          <p style="margin: 0 0 3px 0; font-size: 13px;">
+            <strong>Feschunterwegs Team</strong> | <a href="https://feschunterwegs.com" style="color: #ff6b6b; text-decoration: none;">feschunterwegs.com</a><br>
+            Deine Boutique Reiseagentur
+          </p>
+          <p style="margin: 6px 0 0 0; font-size: 10px; color: #888; line-height: 1.3;">
+            Baaderstraße 25 | 80469 München<br>
+            Geschäftsführung: Alessa Schuhmacher | HRB 284198
+          </p>
+        </div>
+        </div>
       `;
 
     await transporter.sendMail({
@@ -170,7 +195,7 @@ const sendCustomerConfirmation = async (type, data) => {
       html: html
     });
     
-    console.log(`${type === 'quiz' ? 'Quiz' : 'Reservierungs'} Bestätigung an Kunde gesendet`);
+    console.log(`${type === 'quiz' ? 'Quiz' : type === 'reservation' ? 'Reservierungs' : 'Exit Intent'} Bestätigung an Kunde gesendet`);
   } catch (error) {
     console.error('Fehler beim Senden der Kundenbestätigung:', error);
   }
@@ -269,6 +294,48 @@ app.post('/api/reservation', async (req, res) => {
   } catch (err) {
     console.error('Error inserting reservation:', err);
     res.status(500).json({ error: 'Failed to save reservation' });
+  }
+});
+
+// Exit Intent E-Mail Subscription
+app.post('/api/exit-intent', async (req, res) => {
+  const { email, firstName } = req.body;
+  
+  if (!email) {
+    return res.status(400).json({ error: 'Email is required' });
+  }
+  
+  try {
+    const subscriptionId = generateId('exit_intent');
+    
+    // First try to add the column if it doesn't exist
+    try {
+      await pool.query('ALTER TABLE exit_intent_subscriptions ADD COLUMN first_name VARCHAR(100)');
+      console.log('Added first_name column to exit_intent_subscriptions table');
+    } catch (alterError) {
+      // Column might already exist, ignore error
+      console.log('first_name column might already exist or other error:', alterError.message);
+    }
+    
+    const result = await pool.query(
+      'INSERT INTO exit_intent_subscriptions (subscription_id, email, first_name) VALUES ($1, $2, $3) RETURNING id',
+      [subscriptionId, email, firstName || null]
+    );
+    
+    console.log(`Exit intent subscription saved for email: ${email}, name: ${firstName || 'N/A'} with subscription ID: ${subscriptionId}`);
+    
+    // Send confirmation email
+    await sendCustomerConfirmation('exit_intent', { subscriptionId, email, firstName });
+    
+    res.json({ 
+      success: true, 
+      message: 'Exit intent subscription saved successfully',
+      id: result.rows[0].id,
+      subscriptionId
+    });
+  } catch (err) {
+    console.error('Error inserting exit intent subscription:', err);
+    res.status(500).json({ error: 'Failed to save exit intent subscription' });
   }
 });
 

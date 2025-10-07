@@ -1,5 +1,4 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
@@ -39,7 +38,7 @@ const AGB = () => {
           <section>
             <h2 className="text-2xl font-semibold text-editorial-900 mb-4">1. Wer wir sind und wofür diese AGB gelten</h2>
             <div className="space-y-4 text-editorial-700">
-              <p><strong>1.1</strong> Diese AGB gelten für alle Buchungen von Reisen, Ausflügen und sonstigen touristischen Leistungen, die über feschunterwegs vermittelt werden.</p>
+              <p><strong>1.1</strong> Diese AGB gelten für alle Buchungen von Reisen, Ausflügen und sonstigen touristischen Leistungen, die über feschunterwegs vermit??t werden.</p>
               <p><strong>1.2</strong> Wir sind Vermittler, nicht Reiseveranstalter. Verträge über die Durchführung der Reiseleistungen kommen ausschließlich zwischen euch und dem jeweiligen Anbieter (Leistungsträger) zustande. Wir selbst bieten keine Pauschalreisen im Sinne des § 651a BGB an.</p>
               <p><strong>1.3</strong> Abweichende Geschäftsbedingungen unserer Kunden gelten nur, wenn wir ausdrücklich schriftlich zustimmen.</p>
             </div>
